@@ -6,7 +6,7 @@ WORKDIR /app/
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
-COPY package.json yarn.lock
+COPY package.json yarn.lock ./
 
 RUN yarn
 
@@ -16,7 +16,7 @@ RUN yarn
 # Bundle app source
 COPY . .
 
-ENV SERVER_PORT 8080 
+ENV SERVER_PORT 8080
 
-EXPOSE 8000
+EXPOSE 8080
 CMD [ "yarn", "start"]

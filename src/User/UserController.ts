@@ -7,10 +7,10 @@ module.exports = {
   async create(req, res) {
     try {
       const user = await UserModel.create(req.body);
-      res.send(user, 'Successfully added a user')
+      res.status(201).json(user)
     } catch (err) {
-      res.status(err)
-
+      console.log(err)
+      res.status(500).send('Err Creating User')
     }
   },
   async read(req, res) {
