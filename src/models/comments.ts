@@ -1,6 +1,5 @@
 import { model, Schema, Model,  Document } from 'mongoose';
 import {ObjectId} from 'mongodb'
-import { NumberOfAutoScalingGroups } from 'aws-sdk/clients/autoscaling';
 
 interface CommentsModel extends Document {
     recipeId: ObjectId,
