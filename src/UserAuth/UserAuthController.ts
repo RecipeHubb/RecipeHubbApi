@@ -30,7 +30,13 @@ module.exports = {
       res.status(200).json({ user, success: true });
     } catch (err) {
       console.log(err);
-      res.status(404).send(`Error Adding a User: ${err}`);
+      // duplicate userName/email (unique index violation) → 409, everything else → 500
+      const isDuplicate = err && err.code === 11000;
+      const status = isDuplicate ? 409 : 500;
+      const message = isDuplicate
+        ? "Username or email already in use"
+        : "Unable to create account";
+      return res.status(status).json({ success: false, message });
     }
   },
 
@@ -48,7 +54,7 @@ module.exports = {
       const authUser = await AuthModel.findOne(req.body.query);
 
       if (!authUser) {
-        return res.status(401).send("Unable to login");
+        return res.status(401).json({ success: false, message: "Unable to login" });
       }
 
       // compare provided password with stored password
@@ -58,14 +64,14 @@ module.exports = {
       );
 
       if (!userExists) {
-        return res.status(401).send("Unable to login");
+        return res.status(401).json({ success: false, message: "Unable to login" });
       }
 
       const token = jwt.create(authUser);
       res.json({ message: "Login Successful", success: true, token });
     } catch (err) {
       console.log(err);
-      res.status(500).send("Unable to login");
+      res.status(500).json({ success: false, message: "Unable to login" });
     }
   },
 
