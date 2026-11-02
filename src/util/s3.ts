@@ -7,9 +7,6 @@ const s3Bucket = new AWS.S3({
       Bucket: process.env.bucket
 });
 
-console.log('PROCCESS',process.env)
-
-
 
 module.exports = {
   uploadfile: async (file, filename) => {

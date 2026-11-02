@@ -57,4 +57,10 @@ app.listen(port, () => {
 });
 
 app = routes.register(app)
+// Central error handler — catches anything thrown by async route handlers
+app.use((err, req, res, next) => {
+  console.error(err)
+  res.status(err.status || 500).json({ success: false, message: err.message || 'Server error' })
+})
+
 
