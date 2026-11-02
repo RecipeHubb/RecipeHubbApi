@@ -44,25 +44,28 @@ module.exports = {
   },
   async login(req, res) {
     try {
-      console.log("Running auth function");
-      console.log(req.body, req.body.query);
-      // if they pass in either email or password
+      // if they pass in either email or userName
       const authUser = await AuthModel.findOne(req.body.query);
+
+      if (!authUser) {
+        return res.status(401).send("Unable to login");
+      }
 
       // compare provided password with stored password
       const userExists = await bcrypt.compare(
         req.body.password,
         authUser.password
       );
-      const token = await jwt.create(authUser);
 
       if (!userExists) {
-        throw new Error("Unable to login Wrong password");
+        return res.status(401).send("Unable to login");
       }
-      res.json({ message: "Login Succeessful", success: true, token });
+
+      const token = jwt.create(authUser);
+      res.json({ message: "Login Successful", success: true, token });
     } catch (err) {
       console.log(err);
-      res.status(404).send("Unable to login");
+      res.status(500).send("Unable to login");
     }
   },
 
