@@ -38,6 +38,9 @@ const CommentsSchema: Schema = new Schema({
         },
     }, {timestamps: true}  );
 
+// Comments are always fetched per recipe
+CommentsSchema.index({ recipeId: 1 });
+
 
 
 // exporting user model

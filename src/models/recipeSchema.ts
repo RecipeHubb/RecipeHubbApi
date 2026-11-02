@@ -62,6 +62,10 @@ const RecipeSchema: Schema = new Schema({
         },
 },{timestamps: true});
 
+// Hot query paths: fetching a user's recipes, and the public feed/search
+RecipeSchema.index({ ownerId: 1 });
+RecipeSchema.index({ public: 1, ownerId: 1 });
+
 
 
 // exporting user model
